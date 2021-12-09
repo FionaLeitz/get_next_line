@@ -1,21 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_gnl2.c                                          :+:      :+:    :+:   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fleitz <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/08 09:54:23 by fleitz            #+#    #+#             */
-/*   Updated: 2021/12/08 17:45:22 by fleitz           ###   ########.fr       */
+/*   Created: 2021/12/09 09:40:11 by fleitz            #+#    #+#             */
+/*   Updated: 2021/12/09 11:36:45 by fleitz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libftgithub/libft.h"
 #include "get_next_line.h"
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <stdio.h>
+
+size_t	ft_strlen(const char *s)
+{
+	size_t	count;
+
+	count = 0;
+	while (s[count])
+		count++;
+	return (count);
+}
 
 char	*ft_n_buffcpy(char *buff, char *str)
 {
@@ -29,19 +34,20 @@ char	*ft_n_buffcpy(char *buff, char *str)
 		end++;
 	end++;
 	if (str == NULL)
-		str = strndup(buff, end);
+		str = ft_strndup(buff, end);
 	else
 	{
-		save2 = strndup(buff, end);
+		save2 = ft_strndup(buff, end);
 		save = ft_strjoin(str, save2);
 		free(str);
-		str = ft_strdup(save);
+		str = ft_strndup(save, (ft_strlen(save) + 1));
 		free(save);
 		free(save2);
 	}
 	size = BUFFER_SIZE - end;
 	ft_memcpy(buff, &buff[end], size);
 	buff[size] = '\0';
+	buff[size + 1] = '\0';
 	return (str);
 }
 
@@ -51,18 +57,18 @@ char	*ft_buffcpy(char *buff, char *str)
 
 	if (str == NULL)
 	{
-		str = ft_strdup(buff);
+		str = ft_strndup(buff, BUFFER_SIZE);
 		return (str);
 	}
 	save = ft_strjoin(str, buff);
 	free(str);
-	ft_bzero(buff, (BUFFER_SIZE + 1));
+	buff[0] = '\0';
 	return (save);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	buff[BUFFER_SIZE + 1];
+	static char	buff[BUFFER_SIZE + 1] = "\0\0";
 	char		*str;
 	ssize_t		rd;
 
@@ -70,33 +76,21 @@ char	*get_next_line(int fd)
 	while (1)
 	{
 		if (buff[0] == '\0' && buff[1] == 1)
-		{
 			return (NULL);
-		}
-		if (buff[0] == '\0')
-		{
-			rd = read(fd, buff, BUFFER_SIZE);
-			if (rd == -1)
-				return (NULL);
-			if (rd < BUFFER_SIZE)
-			{
-				if (ft_strchr(buff, '\n') != NULL)
-				{
-					str = ft_n_buffcpy(buff, str);
-					return (str);
-				}
-				str = ft_buffcpy(buff, str);
-				buff[1] = 1;
-				return (str);
-			}
-		}
 		if (ft_strchr(buff, '\n') != NULL)
 		{
 			str = ft_n_buffcpy(buff, str);
 			return (str);
 		}
 		str = ft_buffcpy(buff, str);
-		buff[0] = '\0';
-	}
-	return (NULL);
+		rd = read(fd, buff, BUFFER_SIZE);
+		if (rd == -1)
+			return (NULL);
+		buff[rd] = '\0';
+		if (rd == 0)
+		{
+			buff[rd + 1] = 1;
+			return (str);
+		}
+	}		
 }
