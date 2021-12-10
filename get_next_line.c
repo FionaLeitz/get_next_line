@@ -6,7 +6,7 @@
 /*   By: fleitz <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 09:40:11 by fleitz            #+#    #+#             */
-/*   Updated: 2021/12/09 11:36:45 by fleitz           ###   ########.fr       */
+/*   Updated: 2021/12/09 14:09:25 by fleitz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,16 @@ char	*ft_buffcpy(char *buff, char *str)
 	return (save);
 }
 
+int	ft_stop(char *buff, ssize_t rd)
+{
+	if (rd == 0)
+	{
+		buff[1] = 1;
+		return (0);
+	}
+	return (1);
+}
+
 char	*get_next_line(int fd)
 {
 	static char	buff[BUFFER_SIZE + 1] = "\0\0";
@@ -82,15 +92,13 @@ char	*get_next_line(int fd)
 			str = ft_n_buffcpy(buff, str);
 			return (str);
 		}
-		str = ft_buffcpy(buff, str);
+		if (buff[0] != '\0')
+			str = ft_buffcpy(buff, str);
 		rd = read(fd, buff, BUFFER_SIZE);
 		if (rd == -1)
 			return (NULL);
 		buff[rd] = '\0';
-		if (rd == 0)
-		{
-			buff[rd + 1] = 1;
+		if (ft_stop(buff, rd) == 0)
 			return (str);
-		}
 	}		
 }

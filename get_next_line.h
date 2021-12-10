@@ -6,7 +6,7 @@
 /*   By: fleitz <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 10:02:14 by fleitz            #+#    #+#             */
-/*   Updated: 2021/12/09 11:37:41 by fleitz           ###   ########.fr       */
+/*   Updated: 2021/12/09 14:43:00 by fleitz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,6 @@ char	*ft_strjoin(char const *s1, char const *s2);
 void	*ft_memcpy(void *dst, const void *src, size_t n);
 char	*ft_strchr(const char *s, int c);
 char	*strcat(char *s1, const char *s2);
+int		ft_stop(char *buff, ssize_t rd);
 
 #endif
