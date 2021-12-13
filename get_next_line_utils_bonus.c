@@ -6,11 +6,11 @@
 /*   By: fleitz <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 09:40:24 by fleitz            #+#    #+#             */
-/*   Updated: 2021/12/13 11:03:33 by fleitz           ###   ########.fr       */
+/*   Updated: 2021/12/13 08:49:18 by fleitz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*ft_strcat(char	*dst, const char *src)
 {
@@ -34,8 +34,6 @@ char	*ft_strndup(const char *s1, size_t n)
 	char	*str;
 	size_t	i;
 
-	if (s1 == NULL)
-		return (NULL);
 	str = (char *) malloc(sizeof(char) * (n + 1));
 	if (str == NULL)
 		return (NULL);
@@ -87,8 +85,6 @@ char	*ft_strchr(const char *s, int c)
 	size_t	i;
 	size_t	cmp;
 
-	if (s == NULL)
-		return (NULL);
 	cmp = ft_strlen(s) + 1;
 	i = 0;
 	while (i < cmp)
