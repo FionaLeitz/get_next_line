@@ -6,28 +6,11 @@
 /*   By: fleitz <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 09:40:24 by fleitz            #+#    #+#             */
-/*   Updated: 2021/12/13 11:03:33 by fleitz           ###   ########.fr       */
+/*   Updated: 2021/12/13 14:38:46 by fleitz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-char	*ft_strcat(char	*dst, const char *src)
-{
-	size_t	i;
-	size_t	j;
-
-	i = ft_strlen(dst);
-	j = 0;
-	while (src[j])
-	{
-		dst[i] = src[j];
-		i++;
-		j++;
-	}
-	dst[i] = '\0';
-	return (dst);
-}
 
 char	*ft_strndup(const char *s1, size_t n)
 {
@@ -52,14 +35,29 @@ char	*ft_strndup(const char *s1, size_t n)
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*str;
+	size_t	i;
+	size_t	j;
 
 	if (s1 == NULL || s2 == NULL)
 		return (NULL);
-	str = (char *) malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	i = 0;
+	while (s1[i])
+		i++;
+	j = 0;
+	while (s2[j])
+		j++;
+	str = (char *) malloc(sizeof(char) * (i + j + 1));
 	if (str == NULL)
 		return (NULL);
-	ft_memcpy(str, s1, (ft_strlen(s1) + 1));
-	ft_strcat(str, s2);
+	ft_memcpy(str, s1, (i + 1));
+	j = 0;
+	while (s2[j])
+	{
+		str[i] = s2[j];
+		i++;
+		j++;
+	}
+	str[i] = '\0';
 	return (str);
 }
 
@@ -89,7 +87,10 @@ char	*ft_strchr(const char *s, int c)
 
 	if (s == NULL)
 		return (NULL);
-	cmp = ft_strlen(s) + 1;
+	cmp = 0;
+	while (s[cmp])
+		cmp++;
+	cmp++;
 	i = 0;
 	while (i < cmp)
 	{
