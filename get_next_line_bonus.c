@@ -6,28 +6,40 @@
 /*   By: fleitz <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 09:40:11 by fleitz            #+#    #+#             */
-/*   Updated: 2021/12/13 08:48:34 by fleitz           ###   ########.fr       */
+/*   Updated: 2021/12/13 15:10:42 by fleitz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line_bonus.h"
+#include "get_next_line.h"
 
-size_t	ft_strlen(const char *s)
+char	*ft_else(char *buff, char *str, size_t end)
 {
-	size_t	count;
+	char	*save;
+	char	*save2;
+	size_t	size;
 
-	count = 0;
-	while (s[count])
-		count++;
-	return (count);
+	save2 = ft_strndup(buff, end);
+	save = ft_strjoin(str, save2);
+	free(str);
+	if (save == NULL)
+	{
+		if (save2 != NULL)
+			free(save2);
+		return (NULL);
+	}
+	size = 0;
+	while (save[size])
+		size++;
+	str = ft_strndup(save, (size + 1));
+	free(save);
+	free(save2);
+	return (str);
 }
 
 char	*ft_n_buffcpy(char *buff, char *str)
 {
 	size_t	end;
 	size_t	size;
-	char	*save;
-	char	*save2;
 
 	end = 0;
 	while (buff[end] != '\0' && buff[end] != '\n')
@@ -37,17 +49,13 @@ char	*ft_n_buffcpy(char *buff, char *str)
 		str = ft_strndup(buff, end);
 	else
 	{
-		save2 = ft_strndup(buff, end);
-		save = ft_strjoin(str, save2);
-		free(str);
-		str = ft_strndup(save, (ft_strlen(save) + 1));
-		free(save);
-		free(save2);
+		str = ft_else(buff, str, end);
+		if (str == NULL)
+			return (NULL);
 	}
 	size = BUFFER_SIZE - end;
 	ft_memcpy(buff, &buff[end], size);
 	buff[size] = '\0';
-	buff[size + 1] = '\0';
 	return (str);
 }
 
@@ -88,12 +96,13 @@ char	*get_next_line(int fd)
 		if (buff[0] == '\0' && buff[1] == 1)
 			return (NULL);
 		if (ft_strchr(buff, '\n') != NULL)
-		{
-			str = ft_n_buffcpy(buff, str);
-			return (str);
-		}
+			return (ft_n_buffcpy(buff, str));
 		if (buff[0] != '\0')
+		{
 			str = ft_buffcpy(buff, str);
+			if (str == NULL)
+				return (NULL);
+		}
 		rd = read(fd, buff, BUFFER_SIZE);
 		if (rd == -1)
 			return (NULL);

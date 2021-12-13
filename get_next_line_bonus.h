@@ -6,12 +6,12 @@
 /*   By: fleitz <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 10:02:14 by fleitz            #+#    #+#             */
-/*   Updated: 2021/12/13 08:48:53 by fleitz           ###   ########.fr       */
+/*   Updated: 2021/12/09 14:43:00 by fleitz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_BONUS_H
-# define GET_NEXT_LINE_BONUS_H
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 
 # include <stdlib.h>
 # include <unistd.h>
